@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\sbhoc\Documents\GitHub\Web-Applications\learning_log\11_env"
+VIRTUAL_ENV="C:\Users\sbhoc_000\Documents\GitHub\Web-Applications\learning_log\11_env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
