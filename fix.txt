@@ -1,1 +1,4 @@
  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser  
+ 
+ # When moving to new computer
+ python -m venv 11_env
