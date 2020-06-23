@@ -2,3 +2,5 @@
  
  # When moving to new computer
  python -m venv 11_env
+
+ # config is on sbhoc right now
