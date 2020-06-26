@@ -65,7 +65,7 @@ def edit_entry(request, entry_id):
     topic = entry.topic
 
     if request.method != 'POST':
-        #Initial request; prefill form with existing entry
+        # Initial request; prefill form with existing entry
         form = EntryForm(instance=entry)
     else:
         # POST data submitted; process data
