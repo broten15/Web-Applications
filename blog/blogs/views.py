@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import BlogPost
 from .forms import BlogForm
@@ -13,6 +14,7 @@ def home(request):
     context = {'blog_posts':blog_posts}
     return render(request, 'blogs/home.html', context)
 
+@login_required
 def add_post(request):
     """A page for adding new blog posts"""
     if request.method != 'POST':
@@ -28,9 +30,11 @@ def add_post(request):
     context = {'form':form}
     return render(request, 'blogs/add_post.html', context)
 
+@login_required
 def edit_post(request, post_id):
     """Edit an existing post"""
     blog_post = BlogPost.objects.get(id=post_id)
+    check_post_owner(request, blog_post)
 
     if request.method != 'POST':
         # Initial request; prefill form with existing post
@@ -44,5 +48,10 @@ def edit_post(request, post_id):
     
     context = {'form':form, 'blog_post':blog_post}
     return render(request, 'blogs/edit_post.html', context)
+
+def check_post_owner(request, blog_post):
+    """Check to see of post owner matches the current user"""
+    if blog_post.owner != request.user:
+        raise Http404
 
 
