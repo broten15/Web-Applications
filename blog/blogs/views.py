@@ -24,7 +24,9 @@ def add_post(request):
         # POST data submitted; process data
         form = BlogForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_post = form.save(commit=False)
+            new_post.owner = request.user
+            new_post.save()
             return HttpResponseRedirect(reverse('blogs:home'))
     
     context = {'form':form}
