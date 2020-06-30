@@ -138,7 +138,7 @@ BOOTSTRAP3 = {
 if os.getcwd() == '/app':
     import dj_database_url
     DATABASES = {
-        'deafault': dj_database_url.config(default='postgres://localhost')
+        'default': dj_database_url.config(default='postgres://localhost')
     }
 
     # Honor the 'X-Forwarded-Proto' header for request.is_secure()
