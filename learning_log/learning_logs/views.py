@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -16,14 +16,16 @@ def index(request):
 def topics(request):
     """Show all topics"""
     topics = Topic.objects.filter(owner=request.user).order_by('date_added')
-    context = {'topics': topics}
+    public_topics = Topic.objects.filter(make_public=True).exclude(owner=request.user).order_by('date_added')
+    context = {'topics': topics, 'public_topics':public_topics}
     return render(request, 'learning_logs/topics.html', context)
 
 @login_required
 def topic(request, topic_id):
     """Shows a single topic and all of it's entries"""
-    topic = Topic.objects.get(id=topic_id)
-    check_topic_owner(topic, request)
+    topic = get_object_or_404(Topic, id=topic_id)
+    if not topic.make_public:
+        check_topic_owner(topic, request)
 
     entries = topic.entry_set.order_by('-date_added')
     context = {'topic': topic, 'entries':entries}
@@ -51,7 +53,7 @@ def new_topic(request):
 @login_required
 def new_entry(request, topic_id):
     """Adds a new entry to a topic"""
-    topic = Topic.objects.get(id=topic_id)
+    topic = get_object_or_404(Topic, id=topic_id)
     check_topic_owner(topic, request)
 
     if request.method != 'POST':
@@ -73,7 +75,7 @@ def new_entry(request, topic_id):
 @login_required
 def edit_entry(request, entry_id):
     """Edit an existing entry"""
-    entry = Entry.objects.get(id=entry_id)
+    entry = get_object_or_404(Entry, id=entry_id)
     topic = entry.topic
     check_topic_owner(topic, request)
 

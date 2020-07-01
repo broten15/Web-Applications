@@ -6,6 +6,9 @@
 
 {% block content %}
 
+  <h3><a href="{% url 'learning_logs:new_topic' %}">add new topic</a></h3>
+
+  <h2>My topics:</h2>
   <ul>
       {% for topic in topics %}
         <li>
@@ -19,7 +22,20 @@
         </li>
       {% endfor %}
   </ul>
-
-  <h3><a href="{% url 'learning_logs:new_topic' %}">new topic:</a></h3>
+  
+  <h2>Community topics</h2>
+  <ul>
+    {% for public_topic in public_topics %}
+      <li>
+        <h3>
+          <a href="{% url 'learning_logs:topic' public_topic.id %}">{{ public_topic }}</a>
+        </h3>
+      </li>
+    {% empty %}
+      <li>
+          No topics have been added yet
+      </li>
+    {% endfor %}
+</ul>  
 
 {% endblock content %}
